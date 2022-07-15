@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState} from 'react';
 import { SectionWrap } from '../section/SectionWrap';
 import { Statistics } from '../statistics/Statistics';
 import { FeedbackOptions } from '../feedback/FeedbackOptions';
@@ -11,26 +11,29 @@ export const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
-
   const countTotalFeedback = () => {
     return good + neutral + bad;
   }
+
   const countPositiveFeedbackPercentage = () => {
       return Math.floor(good * 100 / countTotalFeedback());
   }
+
   const  onLeaveFeedback = (evt) => {
     const stateName = evt.target.textContent;
+
     switch (stateName) {
+
       case 'good':
-        setGood(good + 1);
+        setGood(prevState => prevState + 1);
         break;
       
       case 'neutral':
-        setNeutral(neutral + 1);
+        setNeutral(prevState => prevState + 1);
         break;
       
       case 'bad':
-        setBad(bad + 1);
+        setBad(prevState => prevState + 1);
         break;
       
       default:
@@ -38,7 +41,7 @@ export const App = () => {
     }
   }
 
-  const options = ["good", "neutral", "bad"];
+  const options = Object.keys({ good, neutral, bad });
 
   return (
     <Container>
@@ -49,15 +52,15 @@ export const App = () => {
            />
       </SectionWrap>
          <SectionWrap title="Statistics">
-           {countTotalFeedback() ? 
-             
+        {countTotalFeedback() ? 
+       
            <Statistics
              good={good}
              neutral={neutral}
              bad={bad}
              total={countTotalFeedback()}
              positivePercentage={countPositiveFeedbackPercentage()} />
-            
+         
             : <Notification message="There is no feedback"/>}
       </SectionWrap>
     </Container>
